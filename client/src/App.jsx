@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [firstNumber, setFirstNumber] = useState('');
+  const [secondNumber, setSecondNumber] = useState('');
+  const [answer, setAnswer] = useState('...');
+
+  function handleFirstNumberChange(e) {
+    setFirstNumber(e.target.value);
+  }
+
+  function handleSecondNumberChange(e) {
+    setSecondNumber(e.target.value);
+  }
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+
+    fetch('http://localhost:4819/api/calc')
+      .then(res => res.json())
+      .then(data => setAnswer(data.result))
+      .catch(e => console.error(e));
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <header className="container">HEADER</header>
+      <main className="container">
+        <form onSubmit={handleFormSubmit}>
+          <input type="text" value={firstNumber} onChange={handleFirstNumberChange} placeholder="Pirmas skaicius" />
+          <span>+</span>
+          <input type="text" value={secondNumber} onChange={handleSecondNumberChange} placeholder="Antras skaicius" />
+          <span>=</span>
+          <button>Calc</button>
+        </form>
+        <div className="result">Result: {answer}</div>
+      </main>
+      <footer className="container">FOOTER</footer>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
