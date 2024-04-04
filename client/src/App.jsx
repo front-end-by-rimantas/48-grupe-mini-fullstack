@@ -16,6 +16,14 @@ function App() {
   function handleFormSubmit(e) {
     e.preventDefault();
 
+    if (isNaN(+firstNumber)) {
+      return setAnswer('Pirmoji reiksme nera skaicius');
+    }
+
+    if (isNaN(+secondNumber)) {
+      return setAnswer('Antroji reiksme nera skaicius');
+    }
+
     fetch('http://localhost:4819/api/calc', {
       method: 'POST',
       headers: {
